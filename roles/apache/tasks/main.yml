@@ -1,9 +1,10 @@
 ---
 - name: install apache package
-  package: name="{{ openstack_meta.apache[ursula_os].package_name }}"
+  package: name="{{ openstack_meta.apache[ursula_os].package_name }}" state={{ apache.install_state }}
   register: result
   until: result|succeeded
   retries: 5
+  tags: CVE-2017-7668
 
 - block:
   - name: use our apache config

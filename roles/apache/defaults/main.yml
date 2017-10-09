@@ -3,6 +3,7 @@ apache_log_path:
   rhel: '/var/log/httpd'
   ubuntu: '/var/log/apache2'
 apache:
+  install_state: present
   package_name:
     ubuntu: apache2
     rhel: httpd
