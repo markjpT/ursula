@@ -22,7 +22,7 @@ ceilometer:
         - openstack-ceilometer-polling
         - openstack-ceilometer-compute
   source:
-    rev: newton-eol
+    rev: stable/ocata
     upper_constraints: '{{ openstack_meta.upper_constraints }}'
     python_dependencies:
       - { name: pymongo }

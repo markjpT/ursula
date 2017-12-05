@@ -79,7 +79,7 @@ nova:
     - virt-top
   driver:
     docker:
-      rev: 'stable/newton'
+      rev: 'stable/ocata'
       git_mirror: https://github.com/stackforge/nova-docker.git
       dest: /opt/stack/novadocker
   distro:
@@ -99,7 +99,7 @@ nova:
         - openstack-nova-compute
     python_post_dependencies: []
   source:
-    rev: 14.0.10
+    rev: stable/ocata
     upper_constraints: '{{ openstack_meta.upper_constraints }}'
     python_dependencies:
       - { name: PyMySQL }

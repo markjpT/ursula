@@ -113,7 +113,7 @@ HORIZON_CONFIG["disable_password_reveal"] = True
 {% if horizon.customize %}
 HORIZON_CONFIG["customization_module"] = "horizon-customization.horizon_customization"
 {% endif %}
-HORIZON_CONFIG["help_url"] = "http://docs.openstack.org/newton"
+HORIZON_CONFIG["help_url"] = "http://docs.openstack.org/ocata"
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
