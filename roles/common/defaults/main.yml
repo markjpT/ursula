@@ -125,7 +125,7 @@ common:
         - python-jinja2
         - cryptsetup
         - libffi-dev
-        - libssl-dev
+        - libssl-dev=1.0.1f-1ubuntu2
         - libxml2-dev
         - libxslt1-dev
       extra_packages:

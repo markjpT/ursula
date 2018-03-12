@@ -9,7 +9,7 @@
 - name: update SSL
   package: name={{ item }} state=latest
   with_items:
-  - libssl1.0.0
+  - libssl1.0.0=1.0.1f-1ubuntu2
   - openssl
   when: ansible_distribution == 'Ubuntu'
 
