@@ -1,20 +1,14 @@
 ---
 - hosts: all:!vyatta-*
   tasks:
-  - name: Patch CVE-2017-5335 CVE-2017-5336 CVE-2017-5337 CVE-2017-3735 CVE-2017-1000257
+  - name: Patch CVE-2018-0737 CVE-2018-0732 
     apt:
       name: "{{ item }}"
       state: latest
       update_cache: yes
       cache_valid_time: 3600
     with_items:
-      - libgnutls26
       - openssl
-      - curl
-      - libcurl3
-      - libcurl3-gnutls
-      - openssh-server
-      - apache2
     register: pkgupdate
     until: pkgupdate|succeeded
     retries: 5
@@ -24,11 +18,6 @@
       name: haproxy
       state: restarted
     when: "pkgupdate.changed and ('controller' in group_names or 'swiftnode' in group_names)"
-  - name: restart ssh
-    service:
-      name: ssh
-      state: restarted
-    when: pkgupdate.changed
   - name: restart apache
     service:
       name: apache2
