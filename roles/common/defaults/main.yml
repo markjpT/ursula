@@ -117,7 +117,6 @@ common:
         - python-lxml
         - python-greenlet
         - python-openssl
-        - python2.7-dev
         - python-httplib2
         - python-software-properties
         - python-virtualenv
