@@ -27,13 +27,20 @@
   until: result|succeeded
   retries: 5
 
+# not sure why this is failing
 - name: update pip (ubuntu)
   pip: name=pip version={{ common.pip_version }}
        extra_args="-i {{ openstack.pypi_mirror }}"
-  when: ansible_distribution_version != "12.04" and ursula_os == "ubuntu"
+  when: ansible_distribution_release == "trusty"
   register: result
   until: result|succeeded
   retries: 5
+
+# same with this
+- name: update pip (xenial)
+  pip: name=pip version={{ common.pip_version }}
+       extra_args="--upgrade"
+  when: ansible_distribution_release == "xenial"
 
 - name: root user pip config directory
   file: dest=/root/.pip state=directory

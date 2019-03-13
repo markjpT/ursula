@@ -25,6 +25,29 @@
   until: result|succeeded
   retries: 5
 
+- name: install ceph dependencies (xenial)
+  apt: 
+    name={{ item }} 
+    state=present
+  with_items:
+    - libsnappy1=1.1.0-1ubuntu1
+    - crash=
+    - libcephfs1=10.2.3~bbc1
+    - librados2=10.2.3~bbc1
+    - librbd1=10.2.3~bbc1
+    - libradosstriper1=10.2.3~bbc1
+    - librgw2=10.2.3~bbc1
+    - python-rbd=10.2.3~bbc1
+    - python-cephfs=10.2.3~bbc1
+    - python-rados=10.2.3~bbc1
+    - ceph-common=10.2.3~bbc1
+    - ceph-base=10.2.3~bbc1
+  register: result
+  until: result|succeeded
+  retries: 5
+  when: ansible_distribution_release == "xenial"
+  tags: xenial-ceph-deps
+
 - name: install ceph osd
   package: name=ceph-osd{{ ceph.pkg_version_connector[ursula_os] }}{{ ceph.version[ursula_os] }}
            state=present
