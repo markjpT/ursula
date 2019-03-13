@@ -98,10 +98,24 @@
 
 - name: enable and start sensu-client
   service: name=sensu-client state=started enabled=yes
+  when: ansible_distribution_release == "trusty"
+
+- block:
+  - name: create sensu-client systemd init file (xenial)
+    systemd_service:
+      name: sensu-client
+      type: simple
+      cmd: /opt/sensu/embedded/bin/ruby /opt/sensu/bin/sensu-client -b -c /etc/sensu/config.json -d /etc/sensu/conf.d -e /etc/sensu/extensions -p /var/run/sensu/sensu-client.pid -l /var/log/sensu/sensu-client.log -L info
+      wanted_by: multi-user.target
+      restart: always
+
+  - name: start sensu-client (xenial)
+    command: systemctl start sensu-client
+  when: ansible_distribution_release == "xenial"
 
 - name: override sensu-client startup
   shell: update-rc.d sensu-client defaults
-  when: ursula_os == 'ubuntu'
+  when: ursula_os == 'ubuntu' 
 
 - name: install sensu plugin pip modules
   pip: name=sensu_plugin version=0.1.0

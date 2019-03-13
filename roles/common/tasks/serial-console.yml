@@ -2,11 +2,31 @@
 #
 # NOTE: this file is included by the prereboot tag, as such it should work not include anything that will break older releases
 #
-- name: serial console init script
-  template: src=etc/init/tty_console.conf dest=/etc/init/{{ tty }}.conf
+- block:
+  - name: serial console init script
+    template: src=etc/init/tty_console.conf dest=/etc/init/{{ tty }}.conf
+  
+  - name: start serial console
+    service: name={{ tty }} state=started enabled=yes
+  
+  - name: append serial console kernel command line
+    set_fact: serial_console_cmdline="{{ serial_console_cmdline|default('') }} console={{ tty }},{{ baud_rate|default('9600') }}n8"
+  when: ansible_distribution_release == "trusty"
 
-- name: start serial console
-  service: name={{ tty }} state=started enabled=yes
+# do systemd stuff if it's xenial
+- block:
+  - name: tty_console systemd service (xenial)
+    systemd_service:
+      name: tty_console
+      type: simple
+      cmd: /sbin/getty -L {{ tty }} {{ baud_rate|default('9600') }} vt100
+      wanted_by: multi-user.target
+      restart: always
 
-- name: append serial console kernel command line
-  set_fact: serial_console_cmdline="{{ serial_console_cmdline|default('') }} console={{ tty }},{{ baud_rate|default('9600') }}n8"
+  - name: start tty_console (xenial)
+    command: systemctl start tty_console
+    become: true
+
+  - name: append serial console kernel command line (xenial)
+    set_fact: serial_console_cmdline="{{ serial_console_cmdline|default('') }} console={{ tty }},{{ baud_rate|default('9600') }}n8"
+  when: ansible_distribution_release == "xenial"
